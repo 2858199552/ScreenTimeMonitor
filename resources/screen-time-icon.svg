@@ -1,0 +1,43 @@
+<svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景 -->
+  <rect width="256" height="256" fill="#1e1e1e" rx="32"/>
+  
+  <!-- 外圈 -->
+  <circle cx="128" cy="128" r="100" fill="none" stroke="#ec4141" stroke-width="6"/>
+  
+  <!-- 内圈刻度 -->
+  <circle cx="128" cy="128" r="75" fill="none" stroke="rgba(255, 255, 255, 0.3)" stroke-width="2"/>
+  
+  <!-- 主要刻度标记 -->
+  <g stroke="#ec4141" stroke-width="4" stroke-linecap="round">
+    <line x1="128" y1="40" x2="128" y2="55"/>
+    <line x1="216" y1="128" x2="201" y2="128"/>
+    <line x1="128" y1="216" x2="128" y2="201"/>
+    <line x1="40" y1="128" x2="55" y2="128"/>
+  </g>
+  
+  <!-- 统计扇形 -->
+  <path d="M 128 128 L 128 60 A 68 68 0 0 1 170 85 Z" fill="#ec4141" opacity="0.8"/>
+  <path d="M 128 128 L 170 85 A 68 68 0 0 1 185 165 Z" fill="#ff6b6b" opacity="0.6"/>
+  <path d="M 128 128 L 185 165 A 68 68 0 1 1 128 60 Z" fill="rgba(255, 255, 255, 0.2)"/>
+  
+  <!-- 时钟指针 -->
+  <g stroke="#ec4141" stroke-linecap="round">
+    <line x1="128" y1="128" x2="108" y2="90" stroke-width="6"/>
+    <line x1="128" y1="128" x2="155" y2="85" stroke-width="4"/>
+  </g>
+  
+  <!-- 中心点 -->
+  <circle cx="128" cy="128" r="8" fill="#ec4141"/>
+  
+  <!-- 小设备图标 -->
+  <g opacity="0.9">
+    <!-- 手机 -->
+    <rect x="90" y="190" width="16" height="24" rx="2" fill="#ffffff" opacity="0.7"/>
+    <rect x="92" y="194" width="12" height="16" fill="#1e1e1e"/>
+    
+    <!-- 电脑 -->
+    <rect x="150" y="190" width="20" height="14" rx="1" fill="#ffffff" opacity="0.7"/>
+    <rect x="152" y="192" width="16" height="10" fill="#1e1e1e"/>
+  </g>
+</svg>

@@ -1,0 +1,56 @@
+<svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景圆形 -->
+  <circle cx="128" cy="128" r="120" fill="#1e1e1e" stroke="#ec4141" stroke-width="6"/>
+  
+  <!-- 时钟外圈 -->
+  <circle cx="128" cy="128" r="90" fill="none" stroke="rgba(255, 255, 255, 0.2)" stroke-width="3"/>
+  
+  <!-- 时钟刻度 -->
+  <g stroke="#ec4141" stroke-width="3">
+    <!-- 12点 -->
+    <line x1="128" y1="50" x2="128" y2="65" stroke-width="4"/>
+    <!-- 3点 -->
+    <line x1="206" y1="128" x2="191" y2="128" stroke-width="4"/>
+    <!-- 6点 -->
+    <line x1="128" y1="206" x2="128" y2="191" stroke-width="4"/>
+    <!-- 9点 -->
+    <line x1="50" y1="128" x2="65" y2="128" stroke-width="4"/>
+    
+    <!-- 其他刻度 -->
+    <line x1="173.84" y1="82.16" x2="166.67" y2="89.33"/>
+    <line x1="173.84" y1="173.84" x2="166.67" y2="166.67"/>
+    <line x1="82.16" y1="173.84" x2="89.33" y2="166.67"/>
+    <line x1="82.16" y1="82.16" x2="89.33" y2="89.33"/>
+  </g>
+  
+  <!-- 时钟指针 -->
+  <g stroke="#ec4141" stroke-linecap="round">
+    <!-- 时针 (指向10点) -->
+    <line x1="128" y1="128" x2="105" y2="95" stroke-width="6"/>
+    <!-- 分针 (指向2点) -->
+    <line x1="128" y1="128" x2="165" y2="85" stroke-width="4"/>
+  </g>
+  
+  <!-- 中心点 -->
+  <circle cx="128" cy="128" r="8" fill="#ec4141"/>
+  
+  <!-- 统计图表元素 -->
+  <g opacity="0.8">
+    <!-- 饼图段 -->
+    <path d="M 128 128 L 128 58 A 70 70 0 0 1 178 95 Z" fill="#ec4141" opacity="0.6"/>
+    <path d="M 128 128 L 178 95 A 70 70 0 0 1 185 155 Z" fill="#ff6b6b" opacity="0.4"/>
+    <path d="M 128 128 L 185 155 A 70 70 0 1 1 128 58 Z" fill="rgba(255, 255, 255, 0.2)"/>
+  </g>
+  
+  <!-- 小图标元素 -->
+  <g opacity="0.9">
+    <!-- 手机图标 -->
+    <rect x="80" y="180" width="20" height="30" rx="3" fill="#ffffff" opacity="0.7"/>
+    <rect x="82" y="185" width="16" height="20" fill="#1e1e1e"/>
+    
+    <!-- 电脑图标 -->
+    <rect x="150" y="180" width="25" height="18" rx="2" fill="#ffffff" opacity="0.7"/>
+    <rect x="152" y="182" width="21" height="12" fill="#1e1e1e"/>
+    <rect x="160" y="198" width="5" height="3" fill="#ffffff" opacity="0.7"/>
+  </g>
+</svg>

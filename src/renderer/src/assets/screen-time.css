@@ -1,0 +1,830 @@
+/* 网易云音乐风格的屏幕使用时间应用 */
+
+.screen-time-app {
+  width: 100%;
+  height: 100vh;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', system-ui, sans-serif;
+  background: #1e1e1e;
+  color: #ffffff;
+  overflow: hidden;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* Windows 平台无边框窗口样式 */
+.screen-time-app {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* 让整个应用可拖拽（仅头部区域） */
+.app-header {
+  -webkit-app-region: drag;
+}
+
+/* 头部的按钮和输入框不可拖拽 */
+.window-btn,
+.date-selector {
+  -webkit-app-region: no-drag;
+}
+
+/* 背景装饰 */
+.screen-time-app::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 300px;
+  background: linear-gradient(135deg, #ec4141 0%, #d62d2d 50%, #b91d1d 100%);
+  opacity: 0.1;
+  z-index: 1;
+}
+
+.screen-time-app > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* 头部样式 - 网易云风格 */
+.app-header {
+  flex-shrink: 0;
+  padding: 12px 16px;
+  background: #1e1e1e;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 100;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.app-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+  color: #ffffff;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.window-controls {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.window-btn {
+  width: 46px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: normal;
+  transition: all 0.2s ease;
+  border-radius: 4px;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+.window-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 1);
+}
+
+.window-btn.close:hover {
+  background: #e81123;
+  color: #ffffff;
+}
+
+.date-selector {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 8px 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-right: 8px;
+}
+
+.date-text {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 500;
+}
+
+/* 日期导航控件 */
+.date-navigation {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-right: 12px;
+}
+
+.nav-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  color: rgba(255, 255, 255, 0.7);
+  -webkit-app-region: no-drag;
+}
+
+.nav-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 1);
+  transform: scale(1.05);
+}
+
+.nav-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.nav-btn svg {
+  transition: transform 0.2s ease;
+}
+
+.nav-btn:hover:not(:disabled) svg {
+  transform: scale(1.1);
+}
+
+.date-selector {
+  min-width: 80px;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.date-selector:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: scale(1.02);
+}
+
+/* 主题切换按钮 */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  margin-right: 8px;
+}
+
+.theme-btn {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+  -webkit-app-region: no-drag;
+}
+
+.theme-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+}
+
+.theme-btn.active {
+  background: linear-gradient(135deg, #ec4141 0%, #d62d2d 100%);
+  border-color: #ec4141;
+  box-shadow: 0 2px 8px rgba(236, 65, 65, 0.3);
+}
+
+.theme-btn.active:hover {
+  background: linear-gradient(135deg, #f04444 0%, #de3030 100%);
+  transform: scale(1.05);
+}
+
+.theme-icon {
+  color: rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-btn:hover .theme-icon {
+  color: rgba(255, 255, 255, 1);
+  transform: rotate(10deg) scale(1.1);
+}
+
+.theme-btn.active .theme-icon {
+  color: #ffffff;
+}
+
+.theme-btn.active:hover .theme-icon {
+  transform: rotate(10deg) scale(1.1);
+}
+
+/* 主内容区域 - 网易云布局 */
+.main-content {
+  flex: 1;
+  display: flex;
+  gap: 24px;
+  padding: 20px 24px;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* 总使用时间卡片 - 网易云风格 */
+.total-time-card {
+  flex: 0 0 360px;
+  background: linear-gradient(135deg, #2a2a2a 0%, #1f1f1f 100%);
+  border-radius: 16px;
+  padding: 32px 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  text-align: center;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.total-time-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: linear-gradient(135deg, #ec4141 0%, #d62d2d 100%);
+  opacity: 0.1;
+  border-radius: 16px 16px 0 0;
+}
+
+.total-time-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+}
+
+.total-time-content {
+  margin-bottom: 24px;
+  position: relative;
+  z-index: 2;
+}
+
+.total-time-number {
+  font-size: 42px;
+  font-weight: 700;
+  color: #ec4141;
+  margin-bottom: 8px;
+  text-shadow: 0 2px 8px rgba(236, 65, 65, 0.3);
+}
+
+.total-time-label {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
+}
+
+.time-chart {
+  position: relative;
+  z-index: 2;
+}
+
+.time-chart svg {
+  width: 160px;
+  height: 160px;
+  filter: drop-shadow(0 4px 12px rgba(236, 65, 65, 0.2));
+}
+
+/* 应用使用详情 - 网易云风格 */
+.app-usage-section {
+  flex: 1;
+  background: linear-gradient(135deg, #2a2a2a 0%, #1f1f1f 100%);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.section-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0 0 20px 0;
+  color: #ffffff;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #ec4141;
+  display: inline-block;
+}
+
+/* 类别分组 - 网易云风格 */
+.category-group {
+  margin-bottom: 24px;
+}
+
+.category-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 12px;
+  margin-bottom: 12px;
+  border-left: 4px solid #ec4141;
+  transition: all 0.2s ease;
+}
+
+.category-header:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateX(4px);
+}
+
+.category-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.category-total {
+  font-size: 14px;
+  color: #ec4141;
+  font-weight: 600;
+}
+
+/* 应用列表 - 网易云风格 */
+.app-list {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.app-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.2s ease;
+  position: relative;
+  cursor: pointer;
+}
+
+.app-item:last-child {
+  border-bottom: none;
+}
+
+.app-item:hover {
+  background: rgba(236, 65, 65, 0.1);
+  transform: translateX(4px);
+}
+
+.app-item:hover::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: #ec4141;
+  border-radius: 0 2px 2px 0;
+}
+
+.app-info {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.app-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  margin-right: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.app-item:hover .app-icon {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+.app-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.app-name {
+  font-size: 16px;
+  font-weight: 500;
+  color: #ffffff;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.app-time {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+  white-space: nowrap;
+}
+
+.app-stats {
+  text-align: right;
+  min-width: 120px;
+  max-width: 120px;
+  flex-shrink: 0;
+  padding-left: 16px;
+}
+
+.usage-percentage {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ec4141;
+  margin-bottom: 8px;
+  white-space: nowrap;
+}
+
+.usage-bar {
+  width: 100px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-left: auto;
+  position: relative;
+}
+
+.usage-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  background: linear-gradient(90deg, #ec4141 0%, #ff6b6b 100%);
+  box-shadow: 0 0 8px rgba(236, 65, 65, 0.3);
+  max-width: 100%;
+  position: relative;
+}
+
+/* 快速操作 - 网易云风格 */
+.quick-actions {
+  flex-shrink: 0;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  padding: 20px 32px 24px 32px;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  background: linear-gradient(135deg, #ec4141 0%, #d62d2d 100%);
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  min-width: 110px;
+  box-shadow: 0 4px 16px rgba(236, 65, 65, 0.3);
+  text-transform: none;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.action-btn:hover {
+  background: linear-gradient(135deg, #ff4747 0%, #e63333 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(236, 65, 65, 0.4);
+}
+
+.action-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(236, 65, 65, 0.3);
+}
+
+.action-btn.secondary {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.action-btn.secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* 响应式设计 - 网易云风格 */
+@media (max-width: 1200px) {
+  .main-content {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .total-time-card {
+    flex: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-align: left;
+    padding: 24px;
+  }
+  
+  .total-time-content {
+    margin-bottom: 0;
+    margin-right: 24px;
+  }
+  
+  .time-chart svg {
+    width: 120px;
+    height: 120px;
+  }
+}
+
+@media (max-width: 768px) {
+  .screen-time-app {
+    padding: 0;
+  }
+  
+  .app-header {
+    padding: 16px 20px;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .app-title {
+    font-size: 24px;
+  }
+  
+  .main-content {
+    padding: 16px 20px;
+    gap: 16px;
+  }
+  
+  .total-time-card {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .total-time-content {
+    margin-right: 0;
+    margin-bottom: 16px;
+  }
+  
+  .total-time-number {
+    font-size: 32px;
+  }
+  
+  .quick-actions {
+    padding: 16px 20px 20px 20px;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .action-btn {
+    min-width: 200px;
+  }
+}
+
+/* 滚动条样式 - 网易云风格 */
+.app-usage-section::-webkit-scrollbar {
+  width: 6px;
+}
+
+.app-usage-section::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+}
+
+.app-usage-section::-webkit-scrollbar-thumb {
+  background: #ec4141;
+  border-radius: 3px;
+  transition: background 0.2s ease;
+}
+
+.app-usage-section::-webkit-scrollbar-thumb:hover {
+  background: #ff4747;
+}
+
+/* 浅色主题样式 */
+body.light-theme .screen-time-app {
+  background: #f5f5f5;
+  color: #1a1a1a;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+body.light-theme .screen-time-app::before {
+  background: linear-gradient(135deg, #ec4141 0%, #d62d2d 50%, #b91d1d 100%);
+  opacity: 0.05;
+}
+
+body.light-theme .app-header {
+  background: #ffffff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+body.light-theme .app-title {
+  color: #1a1a1a;
+}
+
+body.light-theme .date-selector {
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+body.light-theme .date-text {
+  color: rgba(0, 0, 0, 0.7);
+}
+
+body.light-theme .nav-btn {
+  background: rgba(0, 0, 0, 0.08);
+  color: rgba(0, 0, 0, 0.7);
+}
+
+body.light-theme .nav-btn:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.15);
+  color: rgba(0, 0, 0, 1);
+}
+
+body.light-theme .date-selector:hover {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+body.light-theme .theme-btn {
+  background: rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+body.light-theme .theme-btn:hover {
+  background: rgba(0, 0, 0, 0.15);
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+body.light-theme .theme-icon {
+  color: rgba(0, 0, 0, 0.7);
+}
+
+body.light-theme .theme-btn:hover .theme-icon {
+  color: rgba(0, 0, 0, 1);
+}
+
+body.light-theme .theme-btn.active .theme-icon {
+  color: #ffffff;
+}
+
+body.light-theme .window-btn {
+  color: rgba(0, 0, 0, 0.7);
+}
+
+body.light-theme .window-btn:hover {
+  background: rgba(0, 0, 0, 0.1);
+  color: rgba(0, 0, 0, 1);
+}
+
+body.light-theme .total-time-card {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f8f8 100%);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+body.light-theme .total-time-card::before {
+  background: linear-gradient(135deg, #ec4141 0%, #d62d2d 100%);
+  opacity: 0.05;
+}
+
+body.light-theme .total-time-card:hover {
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
+}
+
+body.light-theme .total-time-label {
+  color: rgba(0, 0, 0, 0.7);
+}
+
+body.light-theme .app-usage-section {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f8f8 100%);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+}
+
+body.light-theme .section-title {
+  color: #1a1a1a;
+}
+
+body.light-theme .category-header {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+body.light-theme .category-header:hover {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+body.light-theme .category-name {
+  color: #1a1a1a;
+}
+
+body.light-theme .category-total {
+  color: rgba(0, 0, 0, 0.7);
+}
+
+body.light-theme .app-list {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+body.light-theme .app-list-header {
+  color: #1a1a1a;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+body.light-theme .app-item {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+body.light-theme .app-item:hover {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+body.light-theme .app-name {
+  color: #1a1a1a;
+}
+
+body.light-theme .app-category {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+body.light-theme .app-time {
+  color: #1a1a1a;
+}
+
+body.light-theme .debug-panel {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: #1a1a1a;
+}
+
+body.light-theme .action-btn.primary {
+  background: linear-gradient(135deg, #ec4141 0%, #d62d2d 100%);
+  color: #ffffff;
+}
+
+body.light-theme .action-btn.secondary {
+  background: rgba(0, 0, 0, 0.08);
+  color: #1a1a1a;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+body.light-theme .action-btn.secondary:hover {
+  background: rgba(0, 0, 0, 0.12);
+}
+
+body.light-theme .app-usage-section::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+body.light-theme .app-usage-section::-webkit-scrollbar-thumb {
+  background: #ec4141;
+}
+
+body.light-theme .app-usage-section::-webkit-scrollbar-thumb:hover {
+  background: #ff4747;
+}
