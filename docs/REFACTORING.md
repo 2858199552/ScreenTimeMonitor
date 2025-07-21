@@ -36,7 +36,7 @@ src/main/
 ### 重构后架构
 ```
 src/main/
-├── index.js (主入口文件 ~120 行)
+├── index.js (主入口文件 ~143 行)
 ├── utils/
 │   └── logger.js (日志工具模块)
 └── modules/
@@ -44,7 +44,8 @@ src/main/
     ├── dataStorage.js (数据存储模块)
     ├── autoSaver.js (自动保存模块)
     ├── windowManager.js (窗口管理模块)
-    └── ipcHandler.js (IPC通信模块)
+    ├── ipcHandler.js (IPC通信模块)
+    └── summaryNotifier.js (统计摘要通知模块)
 ```
 
 ---
@@ -59,6 +60,7 @@ src/main/
 - 应用生命周期事件处理
 - 多实例防护
 - 优雅退出处理
+- 统计摘要通知触发
 
 **关键方法：**
 ```javascript
@@ -121,6 +123,7 @@ async saveData(data)           // 保存数据
 getDefaultData()               // 获取默认数据
 generateDayData(dayOffset)     // 生成单日数据
 getDataInfo()                  // 获取存储路径信息
+getYesterdaySummary()          // 获取昨日统计摘要
 ```
 
 ### 5. 自动保存模块 (`modules/autoSaver.js`)
@@ -149,7 +152,8 @@ setInterval(minutes)           // 设置保存间隔
 - 系统托盘功能
 - 窗口控制（最小化、最大化、隐藏）
 - 开机自启管理
-- 系统通知
+- 跨平台系统通知
+- 通知点击事件处理
 
 **主要方法：**
 ```javascript
@@ -162,7 +166,25 @@ showNotification(title, body)  // 显示通知
 setAutoStart(enable)           // 设置开机自启
 ```
 
-### 7. IPC通信模块 (`modules/ipcHandler.js`)
+### 7. 统计摘要通知模块 (`modules/summaryNotifier.js`)
+**职责：** 应用启动时的昨日统计摘要通知
+
+**核心功能：**
+- 昨日数据摘要生成
+- 启动欢迎通知
+- 测试数据生成（开发模式）
+- 跨平台通知显示
+- 通知点击打开应用
+
+**主要方法：**
+```javascript
+async showYesterdaySummary()   // 显示昨日统计摘要
+_generateTestData()            // 生成测试数据（私有）
+_showWelcomeMessage()          // 显示欢迎消息（私有）
+_showSummaryNotification()     // 显示统计通知（私有）
+```
+
+### 8. IPC通信模块 (`modules/ipcHandler.js`)
 **职责：** 主进程与渲染进程的通信处理
 
 **核心功能：**
@@ -341,6 +363,14 @@ npm run dev
 
 ## 📝 变更记录
 
+### v2.1.0 (2025-07-22)
+- ✅ 新增统计摘要通知模块 (SummaryNotifier)
+- ✅ 实现应用启动时昨日统计摘要显示
+- ✅ 支持通知点击自动打开应用
+- ✅ 增强跨平台通知兼容性
+- ✅ 添加开发模式测试数据生成
+- ✅ 进一步优化主入口文件结构
+
 ### v2.0.0 (2025-07-19)
 - ✅ 完成主进程模块化重构
 - ✅ 实现彩色日志系统
@@ -395,5 +425,5 @@ style: 代码格式调整
 
 ---
 
-*本文档最后更新：2025年7月19日*
+*本文档最后更新：2025年7月22日*
 *维护者：GitHub Copilot*

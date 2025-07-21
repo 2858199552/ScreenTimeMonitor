@@ -60,9 +60,9 @@ export function useSettings() {
       if (window.api && window.api.getSettings) {
         const result = await window.api.getSettings()
         
-        if (result.success && result.data) {
-          Object.assign(settings.value, result.data)
-          return result.data
+        if (result.success && result.settings) {
+          Object.assign(settings.value, result.settings)
+          return result.settings
         }
       }
       

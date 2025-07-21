@@ -3,7 +3,7 @@
  * 负责主窗口和托盘的创建、管理和控制
  */
 
-import { BrowserWindow, Tray, Menu, nativeImage, shell, app } from 'electron'
+import { BrowserWindow, Tray, Menu, nativeImage, shell, app, Notification } from 'electron'
 import { join } from 'path'
 import { is } from '@electron-toolkit/utils'
 import { Logger } from '../utils/logger.js'
@@ -295,12 +295,43 @@ class WindowManager {
    * @param {string} body 内容
    */
   showNotification(title, body) {
-    if (this.tray && process.platform === 'win32') {
-      this.tray.displayBalloon({
-        iconType: 'info',
-        title: title,
-        content: body
-      })
+    try {
+      // Windows: 使用托盘气球通知
+      if (this.tray && process.platform === 'win32') {
+        this.tray.displayBalloon({
+          iconType: 'info',
+          title: title,
+          content: body
+        })
+        
+        // 为托盘气球通知添加点击事件
+        this.tray.once('balloon-click', () => {
+          this._showWindow()
+          Logger.info('User clicked on balloon notification, showing main window')
+        })
+      } else {
+        // macOS 和 Linux: 使用系统通知
+        if (Notification.isSupported()) {
+          const notification = new Notification({
+            title: title,
+            body: body,
+            icon: this.iconPath,
+            silent: false
+          })
+          
+          // 为系统通知添加点击事件
+          notification.on('click', () => {
+            this._showWindow()
+            Logger.info('User clicked on system notification, showing main window')
+          })
+          
+          notification.show()
+        } else {
+          Logger.warning('System notifications are not supported on this platform')
+        }
+      }
+    } catch (error) {
+      Logger.error('Failed to show notification:', error)
     }
   }
 
@@ -322,6 +353,9 @@ class WindowManager {
       openAsHidden: true,
       name: '屏幕使用时间'
     })
+    
+    // 更新托盘菜单以反映新的自启动状态
+    // this._createTrayMenu()
   }
 
   /**

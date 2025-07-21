@@ -1,6 +1,6 @@
 {
   "name": "screen-time-monitor",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "屏幕使用时间监控应用 - 基于 Electron + Vue 3 的桌面应用",
   "main": "./out/main/index.js",
   "author": "Your Name",

@@ -275,11 +275,8 @@ onMounted(async () => {
   await fetchRunningApps()
   
   if (isElectron.value) {
-    // 加载数据并应用设置
-    const loadedSettings = await loadAppUsageData()
-    if (loadedSettings) {
-      applySettings(loadedSettings)
-    }
+    // 加载数据（不需要再次应用设置，因为已经通过 loadSettings 加载了）
+    await loadAppUsageData()
     
     // 设置托盘事件监听
     setupTrayListeners({

@@ -6,12 +6,15 @@
 
 - 🔍 **实时应用监控** - 自动检测当前活跃应用程序
 - ⏰ **使用时间统计** - 精确记录每个应用的使用时长
-- 💾 **自动数据保存** - 定时自动保存使用数据，防止数据丢失
+- � **智能统计摘要** - 应用启动时显示昨日使用统计通知
+- 🔔 **点击通知打开** - 点击统计通知自动打开应用窗口
+- �💾 **自动数据保存** - 定时自动保存使用数据，防止数据丢失
 - 🗂️ **数据可视化** - 直观的图表展示使用情况
 - 🔔 **系统托盘** - 最小化到系统托盘，后台持续监控
 - 🎨 **美观界面** - 现代化的 UI 设计
 - 🌙 **深色主题** - 支持深色模式
 - 📈 **统计分析** - 详细的使用报告和趋势分析
+- 🌐 **跨平台通知** - 支持 Windows、macOS、Linux 系统通知
 
 ## 🏗️ 技术架构
 
@@ -29,21 +32,22 @@
 ```
 screen-time-monitor/
 ├── src/
-│   ├── main/                 # 主进程代码
-│   │   ├── index.js         # 入口文件
-│   │   ├── utils/           # 工具模块
-│   │   │   └── logger.js    # 日志系统
-│   │   └── modules/         # 功能模块
-│   │       ├── appDetector.js    # 应用检测
-│   │       ├── dataStorage.js    # 数据存储
-│   │       ├── autoSaver.js      # 自动保存
-│   │       ├── windowManager.js  # 窗口管理
-│   │       └── ipcHandler.js     # IPC通信
-│   ├── preload/             # 预加载脚本
-│   └── renderer/            # 渲染进程 (Vue应用)
-├── docs/                    # 项目文档
-├── build/                   # 构建资源
-└── resources/               # 应用资源
+│   ├── main/                      # 主进程代码
+│   │   ├── index.js              # 入口文件
+│   │   ├── utils/                # 工具模块
+│   │   │   └── logger.js         # 日志系统
+│   │   └── modules/              # 功能模块
+│   │       ├── appDetector.js         # 应用检测
+│   │       ├── dataStorage.js         # 数据存储
+│   │       ├── autoSaver.js           # 自动保存
+│   │       ├── windowManager.js       # 窗口管理
+│   │       ├── ipcHandler.js          # IPC通信
+│   │       └── summaryNotifier.js     # 统计摘要通知
+│   ├── preload/                  # 预加载脚本
+│   └── renderer/                 # 渲染进程 (Vue应用)
+├── docs/                         # 项目文档
+├── build/                        # 构建资源
+└── resources/                    # 应用资源
 ```
 
 ## 🚀 快速开始
@@ -161,6 +165,15 @@ npm run build:linux
 2. 查看数据存储路径
 3. 确认应用正常退出
 
+#### Windows 打包失败
+常见错误：`Cannot create symbolic link : 客户端没有所需的特权`
+
+**解决方案：**
+1. 以管理员身份运行终端
+2. 启用 Windows 开发者模式
+3. 清理 electron-builder 缓存：`npx electron-builder clean`
+4. 确保 Node.js 和 npm 版本符合要求
+
 ### 日志查看
 开发模式下，在终端查看彩色日志输出：
 ```bash
@@ -195,6 +208,13 @@ chore: 构建过程或辅助工具的变动
 ```
 
 ## 📝 更新日志
+
+### v2.1.0 (2025-07-22)
+- ✨ **新增**: 应用启动时昨日统计摘要通知
+- 🔔 **新增**: 点击通知自动打开应用功能
+- 🌐 **增强**: 跨平台通知兼容性 (Windows/macOS/Linux)
+- 🏗️ **重构**: 新增统计摘要通知模块 (`SummaryNotifier`)
+- 🧪 **优化**: 开发模式测试数据生成
 
 ### v2.0.0 (2025-07-19)
 - ✨ **重大重构**: 将单体代码拆分为模块化架构
@@ -305,8 +325,10 @@ npm run build
 
 ### 打包为可执行文件
 
+⚠️ **重要提示**：在 Windows 系统上打包时，需要以**管理员身份**运行命令行工具，否则可能会因为符号链接权限问题导致打包失败。
+
 ```bash
-# Windows 版本
+# Windows 版本 (需要管理员权限)
 npm run build:win
 
 # macOS 版本  

@@ -136,6 +136,60 @@ class DataStorage {
   }
 
   /**
+   * 获取昨日统计数据摘要
+   * @returns {Object|null} 昨日统计数据摘要或null
+   */
+  async getYesterdaySummary() {
+    try {
+      const data = await this.loadData()
+      const yesterday = new Date()
+      yesterday.setDate(yesterday.getDate() - 1)
+      const yesterdayKey = yesterday.toISOString().split('T')[0]
+      
+      const yesterdayData = data.weeklyData[yesterdayKey]
+      if (!yesterdayData || !yesterdayData.apps || yesterdayData.apps.length === 0) {
+        return null
+      }
+
+      // 计算总使用时间（分钟）
+      const totalMinutes = yesterdayData.totalTime || 0
+      const hours = Math.floor(totalMinutes / 60)
+      const minutes = totalMinutes % 60
+      
+      // 获取最常用的应用（前3个）
+      const topApps = yesterdayData.apps
+        .sort((a, b) => b.time - a.time)
+        .slice(0, 3)
+        .map((app) => ({
+          name: app.name,
+          time: app.time,
+          icon: app.icon || '📱'
+        }))
+
+      // 格式化时间显示
+      let timeText = ''
+      if (hours > 0 && minutes > 0) {
+        timeText = `${hours}小时${minutes}分钟`
+      } else if (hours > 0) {
+        timeText = `${hours}小时`
+      } else {
+        timeText = `${minutes}分钟`
+      }
+
+      return {
+        date: yesterdayKey,
+        totalTime: totalMinutes,
+        timeText: timeText,
+        topApps: topApps,
+        appCount: yesterdayData.apps.length
+      }
+    } catch (error) {
+      Logger.error('Failed to get yesterday summary:', error)
+      return null
+    }
+  }
+
+  /**
    * 获取数据文件路径信息
    * @returns {Object} 路径信息
    */

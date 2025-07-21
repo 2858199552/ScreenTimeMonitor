@@ -14,6 +14,7 @@ import { DataStorage } from './modules/dataStorage.js'
 import { AutoSaver } from './modules/autoSaver.js'
 import { WindowManager } from './modules/windowManager.js'
 import { IPCHandler } from './modules/ipcHandler.js'
+import { SummaryNotifier } from './modules/summaryNotifier.js'
 
 // 全局实例
 let appDetector = null
@@ -21,6 +22,7 @@ let dataStorage = null
 let autoSaver = null
 let windowManager = null
 let ipcHandler = null
+let summaryNotifier = null
 
 /**
  * 初始化应用
@@ -32,6 +34,7 @@ function initializeApp() {
   autoSaver = new AutoSaver(dataStorage, appDetector)
   windowManager = new WindowManager(icon)
   ipcHandler = new IPCHandler(appDetector, dataStorage, autoSaver, windowManager)
+  summaryNotifier = new SummaryNotifier(dataStorage, windowManager)
 
   // 注册IPC处理器
   ipcHandler.registerHandlers()
@@ -84,6 +87,9 @@ app.whenReady().then(() => {
 
   // 创建主窗口
   windowManager.createWindow()
+
+  // 显示昨日统计摘要（在窗口创建后）
+  summaryNotifier.showYesterdaySummary()
 
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
